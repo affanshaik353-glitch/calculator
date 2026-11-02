@@ -82,6 +82,15 @@ with check (
   and (select public.is_memory_admin())
 );
 
+drop policy if exists "Admins can view memory photo metadata" on storage.objects;
+create policy "Admins can view memory photo metadata"
+on storage.objects for select
+to authenticated
+using (
+  bucket_id = 'memories'
+  and (select public.is_memory_admin())
+);
+
 drop policy if exists "Admins can delete memory photos" on storage.objects;
 create policy "Admins can delete memory photos"
 on storage.objects for delete
